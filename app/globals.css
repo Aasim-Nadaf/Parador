@@ -1,26 +1,245 @@
+/* ─── Imports ───────────────────────────────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─── Tailwind theme tokens ─────────────────────────────── */
+/* Map to Tailwind utilities: bg-background, text-foreground, font-sans, font-serif, etc. */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* use OKLCH for Tailwind theme tokens */
+  --color-background: oklch(0.98 0.02 85); /* soft warm background */
+  --color-foreground: oklch(0.17 0.03 65); /* deep text */
+
+  --color-card: oklch(0.97 0.03 85);
+  --color-card-foreground: oklch(0.17 0.03 65);
+
+  --color-popover: oklch(0.98 0.02 85);
+  --color-popover-foreground: oklch(0.17 0.03 65);
+
+  --color-primary: oklch(0.2 0.04 60);
+  --color-primary-foreground: oklch(0.98 0.02 85);
+
+  --color-secondary: oklch(0.92 0.03 85);
+  --color-secondary-foreground: oklch(0.25 0.04 60);
+
+  --color-muted: oklch(0.94 0.02 85);
+  --color-muted-foreground: oklch(0.45 0.03 60);
+
+  --color-accent: oklch(0.75 0.09 85);
+  --color-accent-foreground: oklch(0.18 0.04 55);
+
+  --color-destructive: oklch(0.63 0.24 27);
+  --color-destructive-foreground: oklch(1 0 0);
+
+  --color-border: oklch(0.88 0.02 85);
+  --color-input: oklch(0.88 0.02 85);
+  --color-ring: oklch(0.75 0.09 85);
+
+  --radius: 0.5rem;
+
+  /* custom tokens with Tailwind utilities: bg-gold, text-gold, etc. */
+  --color-gold: oklch(0.75 0.09 85);
+  --color-gold-light: oklch(0.85 0.07 85);
+  --color-gold-dark: oklch(0.6 0.12 80);
+
+  --color-charcoal: oklch(0.2 0.03 60);
+  --color-charcoal-light: oklch(0.3 0.02 60);
+  --color-warm-white: oklch(0.99 0.02 85);
+  --color-cream: oklch(0.95 0.03 85);
+  --color-stone: oklch(0.75 0.02 80);
+
+  /* sidebar tokens */
+  --color-sidebar-background: oklch(0.98 0.02 85);
+  --color-sidebar-foreground: oklch(0.3 0.03 60);
+  --color-sidebar-primary: oklch(0.18 0.04 60);
+  --color-sidebar-primary-foreground: oklch(0.98 0.02 85);
+  --color-sidebar-accent: oklch(0.96 0.02 85);
+  --color-sidebar-accent-foreground: oklch(0.2 0.04 60);
+  --color-sidebar-border: oklch(0.88 0.02 85);
+  --color-sidebar-ring: oklch(0.75 0.09 85);
+
+  /* fonts mapped to Tailwind */
+  --font-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-serif: "Playfair Display", "Times New Roman", serif;
+  --font-mono: var(
+    --font-geist-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace
+  );
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─── Dark theme overrides ──────────────────────────────── */
+/* Works with class="dark" on <html> or <body> */
+
+@layer base {
+  .dark {
+    --color-background: oklch(0.12 0.03 60);
+    --color-foreground: oklch(0.95 0.02 85);
+
+    --color-card: oklch(0.16 0.03 60);
+    --color-card-foreground: oklch(0.95 0.02 85);
+
+    --color-popover: oklch(0.14 0.03 60);
+    --color-popover-foreground: oklch(0.95 0.02 85);
+
+    --color-primary: oklch(0.95 0.02 85);
+    --color-primary-foreground: oklch(0.12 0.03 60);
+
+    --color-secondary: oklch(0.2 0.03 60);
+    --color-secondary-foreground: oklch(0.92 0.02 85);
+
+    --color-muted: oklch(0.22 0.02 60);
+    --color-muted-foreground: oklch(0.7 0.02 80);
+
+    --color-accent: oklch(0.75 0.09 85);
+    --color-accent-foreground: oklch(0.18 0.04 55);
+
+    --color-destructive: oklch(0.45 0.2 27);
+    --color-destructive-foreground: oklch(1 0 0);
+
+    --color-border: oklch(0.22 0.02 60);
+    --color-input: oklch(0.22 0.02 60);
+    --color-ring: oklch(0.75 0.09 85);
+
+    --color-sidebar-background: oklch(0.14 0.03 60);
+    --color-sidebar-foreground: oklch(0.92 0.02 85);
+    --color-sidebar-primary: oklch(0.75 0.09 85);
+    --color-sidebar-primary-foreground: oklch(0.12 0.03 60);
+    --color-sidebar-accent: oklch(0.18 0.03 60);
+    --color-sidebar-accent-foreground: oklch(0.92 0.02 85);
+    --color-sidebar-border: oklch(0.2 0.03 60);
+    --color-sidebar-ring: oklch(0.75 0.09 85);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Optional system dark-mode hook if you want auto theming on <html> without .dark class */
+@media (prefers-color-scheme: dark) {
+  :root:not(.dark) {
+    color-scheme: dark;
+  }
+}
+
+/* ─── Base element styles ───────────────────────────────── */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
+}
+
+/* ─── Components ────────────────────────────────────────── */
+
+@layer components {
+  .text-gradient-gold {
+    @apply bg-linear-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl;
+  }
+
+  .image-shine {
+    @apply relative overflow-hidden;
+  }
+
+  .image-shine::after {
+    content: "";
+    @apply absolute inset-0 bg-linear-to-r from-transparent via-warm-white/20 to-transparent -translate-x-full;
+    animation: shine 3s infinite;
+  }
+}
+
+/* ─── Utilities & Animations ───────────────────────────── */
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+  .stagger-1 {
+    animation-delay: 0.1s;
+  }
+  .stagger-2 {
+    animation-delay: 0.2s;
+  }
+  .stagger-3 {
+    animation-delay: 0.3s;
+  }
+  .stagger-4 {
+    animation-delay: 0.4s;
+  }
+  .stagger-5 {
+    animation-delay: 0.5s;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%,
+  100% {
+    transform: translateX(100%);
+  }
 }
