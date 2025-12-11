@@ -1,8 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Menu, X, Globe, User } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
+
+const navLinks = [
+  { href: "/stays", label: "Stays" },
+  { href: "/experiences", label: "Experiences" },
+  { href: "/destinations", label: "Distinations" },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +20,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
+            <Image src={"/logo.svg"} alt="logo" width={30} height={30} />
             <span className="font-serif text-2xl tracking-tight text-foreground">
               Parador
             </span>
@@ -20,32 +28,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link
-              href="/stays"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Stays
-            </Link>
-            <Link
-              href="/experiences"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Experiences
-            </Link>
-            <Link
-              href="/destinations"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Destinations
-            </Link>
+            {navLinks.map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm" className="text-muted-foreground">
-              <Globe className="h-4 w-4 mr-2" />
-              EN
-            </Button>
             <Button variant="ghost" size="sm" className="text-muted-foreground">
               Become a Host
             </Button>
@@ -73,28 +68,18 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden py-6 border-t border-border animate-fade-up">
             <div className="flex flex-col gap-4">
-              <Link
-                href="/stays"
-                className="text-lg font-medium text-foreground py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Stays
-              </Link>
-              <Link
-                href="/experiences"
-                className="text-lg font-medium text-foreground py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Experiences
-              </Link>
-              <Link
-                href="/destinations"
-                className="text-lg font-medium text-foreground py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Destinations
-              </Link>
+              {navLinks.map(({ label, href }) => (
+                <Link
+                  href={href}
+                  className="text-lg font-medium text-foreground py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {label}
+                </Link>
+              ))}
+
               <hr className="border-border my-2" />
+
               <Link
                 href="/host"
                 className="text-muted-foreground py-2"
