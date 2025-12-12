@@ -68,7 +68,7 @@ const WhyParador = () => {
           <div className="relative">
             <div className="aspect-4/5 rounded-3xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80"
+                src="https://plus.unsplash.com/premium_photo-1687996107372-a0817c9006b2?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Luxury resort pool with ocean view"
                 className="w-full h-full object-cover"
                 loading="lazy"

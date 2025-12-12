@@ -41,9 +41,9 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm" className="text-muted-foreground">
+            {/* <Button variant="ghost" size="sm" className="text-muted-foreground">
               Become a Host
-            </Button>
+            </Button> */}
             <Button variant="outline" size="sm" className="gap-2">
               <User className="h-4 w-4" />
               Sign In
@@ -80,13 +80,13 @@ const Navbar = () => {
 
               <hr className="border-border my-2" />
 
-              <Link
+              {/* <Link
                 href="/host"
                 className="text-muted-foreground py-2"
                 onClick={() => setIsOpen(false)}
               >
                 Become a Host
-              </Link>
+              </Link> */}
               <Button className="mt-2 w-full">Sign In</Button>
             </div>
           </div>

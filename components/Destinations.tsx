@@ -6,7 +6,7 @@ const destinations = [
     country: "Greece",
     properties: 234,
     image:
-      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1641663054523-98fddeb4ab00?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     name: "Bali",
@@ -20,7 +20,7 @@ const destinations = [
     country: "Italy",
     properties: 189,
     image:
-      "https://images.unsplash.com/photo-1534113414509-0eec2bfb493a?w=800&q=80",
+      "https://images.unsplash.com/photo-1722055548404-02f0d4045476?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     name: "Provence",
@@ -28,6 +28,27 @@ const destinations = [
     properties: 312,
     image:
       "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=800&q=80",
+  },
+  {
+    name: "Maldives Atolls",
+    country: "Maldives",
+    properties: 224,
+    image:
+      "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0",
+  },
+  {
+    name: "St. Moritz",
+    country: "Switzerland",
+    properties: 132,
+    image:
+      "https://images.unsplash.com/photo-1752494488458-1488d4428f45?q=80&w=1165&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    name: "Marrakech Riads",
+    country: "Morocco",
+    properties: 193,
+    image:
+      "https://images.unsplash.com/photo-1509057199576-632a47484ece?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0",
   },
 ];
 
@@ -76,29 +97,52 @@ const Destinations = () => {
           </div>
 
           {/* Smaller Cards */}
-          {destinations.slice(1).map((dest, index) => (
+          {destinations.slice(1).map(({ country, image, name, properties }) => (
             <div
-              key={dest.name}
+              key={name}
               className="group relative rounded-3xl overflow-hidden cursor-pointer min-h-[280px]"
             >
               <img
-                src={dest.image}
-                alt={`${dest.name}, ${dest.country}`}
+                src={image}
+                alt={`${name}, ${country}`}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-linear-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <p className="text-cream/70 text-xs uppercase tracking-wider mb-1">
-                  {dest.properties} properties
+                  {properties} properties
                 </p>
-                <h3 className="font-serif text-2xl text-cream mb-1">
-                  {dest.name}
-                </h3>
-                <p className="text-cream/80 text-sm">{dest.country}</p>
+                <h3 className="font-serif text-2xl text-cream mb-1">{name}</h3>
+                <p className="text-cream/80 text-sm">{country}</p>
               </div>
             </div>
           ))}
+
+          <div className="lg:col-span-2 lg:row-span-2 group relative rounded-3xl overflow-hidden cursor-pointer">
+            <img
+              src={
+                "https://images.unsplash.com/photo-1641663054523-98fddeb4ab00?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              }
+              alt={`${destinations[4].name}, ${destinations[4].country}`}
+              className="w-full h-full min-h-[400px] lg:min-h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-8">
+              <p className="text-cream/70 text-sm uppercase tracking-wider mb-2">
+                {destinations[4].properties} properties
+              </p>
+              <h3 className="font-serif text-3xl md:text-4xl text-cream mb-2">
+                {destinations[4].name}
+              </h3>
+              <p className="text-cream/80">{destinations[4].country}</p>
+              <div className="mt-6 inline-flex items-center gap-2 text-cream group-hover:text-gold-light transition-colors">
+                <span className="text-sm font-medium">Explore</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
