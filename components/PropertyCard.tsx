@@ -1,34 +1,37 @@
 "use client";
 import { Heart, Star } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
-interface PropertyCardProps {
+export interface PropertyCardProps {
+  id?: string;
   image: string;
   title: string;
   location: string;
   price: number;
   rating: number;
   reviewCount: number;
-  type: string;
+  type?: string;
   isSuperhost?: boolean;
 }
 
 const PropertyCard = ({
+  id,
   image,
   title,
   location,
   price,
   rating,
   reviewCount,
-  type,
+  type = "Luxury Stay",
   isSuperhost = false,
 }: PropertyCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
 
-  return (
+  const content = (
     <article className="group cursor-pointer">
       {/* Image Container */}
-      <div className="relative aspect-4/5 rounded-2xl overflow-hidden mb-4">
+      <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-4">
         <img
           src={image}
           alt={title}
@@ -37,7 +40,7 @@ const PropertyCard = ({
         />
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-linear-to-t from-charcoal/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Favorite Button */}
         <button
@@ -103,6 +106,12 @@ const PropertyCard = ({
       </div>
     </article>
   );
+
+  if (id) {
+    return <Link href={`/property/${id}`}>{content}</Link>;
+  }
+
+  return content;
 };
 
 export default PropertyCard;
