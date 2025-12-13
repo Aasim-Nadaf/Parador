@@ -1,15 +1,6 @@
 "use client";
 import { useState } from "react";
-import {
-  Menu,
-  X,
-  Globe,
-  User,
-  LogOut,
-  HouseHeart,
-  HousePlusIcon,
-  Home,
-} from "lucide-react";
+import { Menu, X, User, LogOut, Store, Castle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -21,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +22,7 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     await signOut();
+    toast.success("Successfully signed out");
     navigate.push("/");
   };
 
@@ -36,13 +30,24 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <nav className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="font-serif text-2xl tracking-tight text-foreground">
-              Parador
-            </span>
-          </Link>
+          {/* Logo - Left Side */}
+          <div className="flex-1">
+            <Link href="/" className="flex items-center gap-2 w-fit">
+              <Image
+                src={"/logo.svg"}
+                alt="logo"
+                height={40}
+                width={40}
+                className="w-auto h-auto"
+              />
+              <span className="font-serif text-2xl tracking-tight text-foreground">
+                Parador
+              </span>
+            </Link>
+          </div>
 
-          <div className="hidden md:flex items-center gap-8">
+          {/* Navigation Links - Center */}
+          <div className="hidden lg:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
             <Link
               href="/stays"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -63,14 +68,15 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          {/* User Actions - Right Side */}
+          <div className="hidden md:flex items-center gap-4 flex-1 justify-end">
             <Link href="/host">
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 className="text-muted-foreground"
               >
-                <Home className="h-4 w-4" />
+                <Store className="h-4 w-4 mr-2" />
                 Become a Host
               </Button>
             </Link>
@@ -108,8 +114,9 @@ const Navbar = () => {
             )}
           </div>
 
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="lg:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -121,6 +128,7 @@ const Navbar = () => {
           </button>
         </div>
 
+        {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden py-6 border-t border-border animate-fade-up">
             <div className="flex flex-col gap-4">
