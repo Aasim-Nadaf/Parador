@@ -45,6 +45,7 @@ const PropertyCard = ({
         {/* Favorite Button */}
         <button
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             setIsLiked(!isLiked);
           }}

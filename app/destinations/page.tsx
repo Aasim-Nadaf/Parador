@@ -1,6 +1,49 @@
 import { ArrowRight, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Luxury Destinations",
+  description:
+    "Explore the world's most sought-after luxury destinations. From tropical paradises to urban escapes, discover your next extraordinary getaway with Parador.",
+  keywords: [
+    "luxury destinations",
+    "travel destinations",
+    "vacation destinations",
+    "luxury travel",
+    "premium destinations",
+    "exotic locations",
+    "luxury getaways",
+    "top destinations",
+    "vacation spots",
+  ],
+  openGraph: {
+    title: "Luxury Destinations | Parador",
+    description:
+      "Explore the world's most sought-after luxury destinations. From tropical paradises to urban escapes, discover your next extraordinary getaway.",
+    url: "https://parador-stays.vercel.app/destinations",
+    type: "website",
+    images: [
+      {
+        url: "https://parador-stays.vercel.app/property-1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Parador Luxury Destinations",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luxury Destinations | Parador",
+    description:
+      "Explore the world's most sought-after luxury destinations. From tropical paradises to urban escapes.",
+    images: ["https://parador-stays.vercel.app/hero-villa.jpg"],
+  },
+  alternates: {
+    canonical: "https://parador-stays.vercel.app/destinations",
+  },
+};
 
 const destinations = [
   {

@@ -1,0 +1,39 @@
+{
+  "name": "Parador - Luxury Stays",
+  "short_name": "Parador",
+  "description": "Premium vacation rentals and luxury accommodations worldwide",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#D97706",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/property-3.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/property-1.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "lifestyle", "business"],
+  "screenshots": [
+    {
+      "src": "/property-2.jpg",
+      "sizes": "540x720",
+      "type": "image/jpg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/hero-villa.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpg",
+      "form_factor": "wide"
+    }
+  ]
+}

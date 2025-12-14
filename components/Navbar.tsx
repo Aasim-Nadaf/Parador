@@ -6,7 +6,6 @@ import {
   User,
   LogOut,
   Store,
-  Castle,
   LayoutDashboard,
   BookIcon,
 } from "lucide-react";
@@ -22,16 +21,17 @@ import {
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useRouter();
+  const { toast } = useToast();
 
   const handleSignOut = async () => {
     await signOut();
-    toast.success("Successfully signed out");
+    toast({ title: "Sign Out Successfully" });
     navigate.push("/");
   };
 
@@ -197,7 +197,7 @@ const Navbar = () => {
                   <Button
                     onClick={handleSignOut}
                     variant="outline"
-                    className="mt-2 w-full"
+                    className="mt-2 w-full cursor-pointer"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out

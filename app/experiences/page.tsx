@@ -1,6 +1,50 @@
 import { ArrowRight, Clock, Users, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Luxury Experiences",
+  description:
+    "Discover curated luxury experiences and exclusive activities. From private tours to gourmet dining, elevate your stay with unforgettable moments crafted by Parador.",
+  keywords: [
+    "luxury experiences",
+    "exclusive activities",
+    "private tours",
+    "luxury travel experiences",
+    "curated experiences",
+    "premium activities",
+    "luxury tours",
+    "unique experiences",
+    "luxury adventures",
+    "travel experiences",
+  ],
+  openGraph: {
+    title: "Luxury Experiences | Parador",
+    description:
+      "Discover curated luxury experiences and exclusive activities. From private tours to gourmet dining, elevate your stay with unforgettable moments.",
+    url: "https://parador-stays.vercel.app/experiences",
+    type: "website",
+    images: [
+      {
+        url: "https://parador-stays.vercel.app/property-3.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Parador Luxury Experiences",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luxury Experiences | Parador",
+    description:
+      "Discover curated luxury experiences and exclusive activities. Elevate your stay with unforgettable moments.",
+    images: ["https://parador-stays.vercel.app/hero-villa.jpg"],
+  },
+  alternates: {
+    canonical: "https://parador-stays.vercel.app/experiences",
+  },
+};
 
 const experiences = [
   {
