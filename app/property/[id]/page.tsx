@@ -36,8 +36,8 @@ interface Property {
   bathrooms: number;
   amenities: string[] | null;
   images: string[] | null;
-  rating: number;
-  review_count: number;
+  rating: number | null;
+  review_count: number | null;
   host_id: string;
 }
 
@@ -231,7 +231,7 @@ const PropertyDetail = () => {
                   <span className="text-foreground font-medium">
                     {Number(property.rating).toFixed(1)}
                   </span>
-                  <span>({property.review_count} reviews)</span>
+                  <span>({property.review_count ?? 0} reviews)</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
@@ -257,7 +257,7 @@ const PropertyDetail = () => {
 
           {/* Images */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 rounded-2xl overflow-hidden">
-            <div className="aspect-[4/3] md:aspect-auto md:row-span-2 relative">
+            <div className="aspect-4/3 md:aspect-auto md:row-span-2 relative">
               <Image
                 src={
                   property.images?.[0] ||
@@ -272,7 +272,7 @@ const PropertyDetail = () => {
             </div>
             <div className="hidden md:grid grid-cols-2 gap-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-[4/3] relative">
+                <div key={i} className="aspect-4/3 relative">
                   <Image
                     src={
                       property.images?.[i] ||

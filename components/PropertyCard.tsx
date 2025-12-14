@@ -31,7 +31,7 @@ const PropertyCard = ({
   const content = (
     <article className="group cursor-pointer">
       {/* Image Container */}
-      <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-4">
+      <div className="relative aspect-4/5 rounded-2xl overflow-hidden mb-4">
         <img
           src={image}
           alt={title}
@@ -40,7 +40,7 @@ const PropertyCard = ({
         />
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-linear-to-t from-charcoal/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Favorite Button */}
         <button

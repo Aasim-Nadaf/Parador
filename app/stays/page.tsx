@@ -20,8 +20,8 @@ interface Property {
   title: string;
   location: string;
   price_per_night: number;
-  rating: number;
-  review_count: number;
+  rating: number | null;
+  review_count: number | null;
   images: string[] | null;
   bedrooms: number;
   bathrooms: number;
@@ -47,7 +47,7 @@ const Stays = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setProperties(data || []);
+      setProperties(data);
     } catch (error) {
       console.error("Error fetching properties:", error);
     } finally {
@@ -150,8 +150,8 @@ const Stays = () => {
                   title={property.title}
                   location={property.location}
                   price={Number(property.price_per_night)}
-                  rating={Number(property.rating)}
-                  reviewCount={property.review_count}
+                  rating={Number(property.rating) || 0}
+                  reviewCount={property.review_count || 0}
                 />
               ))}
             </div>

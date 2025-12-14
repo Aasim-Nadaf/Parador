@@ -1,6 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Menu, X, User, LogOut, Store, Castle } from "lucide-react";
+import {
+  Menu,
+  X,
+  User,
+  LogOut,
+  Store,
+  Castle,
+  LayoutDashboard,
+  BookIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -69,21 +78,26 @@ const Navbar = () => {
           </div>
 
           {/* User Actions - Right Side */}
-          <div className="hidden md:flex items-center gap-4 flex-1 justify-end">
-            <Link href="/host">
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-muted-foreground"
-              >
-                <Store className="h-4 w-4 mr-2" />
+          <div className="hidden lg:flex items-center gap-4 flex-1 justify-end">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="text-muted-foreground cursor-pointer"
+            >
+              <Link href="/host">
+                <Store className="h-4 w-4" />
                 Become a Host
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 cursor-pointer"
+                  >
                     <User className="h-4 w-4" />
                     Account
                   </Button>
@@ -92,9 +106,11 @@ const Navbar = () => {
                   <DropdownMenuItem
                     onClick={() => navigate.push("/my-bookings")}
                   >
+                    <BookIcon className="h-4 w-4 mr-2" />
                     My Bookings
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate.push("/host")}>
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
                     Host Dashboard
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -105,12 +121,17 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/auth">
-                <Button variant="outline" size="sm" className="gap-2">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="gap-2 cursor-pointer"
+              >
+                <Link href="/auth">
                   <User className="h-4 w-4" />
                   Sign In
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             )}
           </div>
 
@@ -130,7 +151,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden py-6 border-t border-border animate-fade-up">
+          <div className="lg:hidden py-6 border-t border-border animate-fade-up">
             <div className="flex flex-col gap-4">
               <Link
                 href="/stays"
@@ -154,13 +175,16 @@ const Navbar = () => {
                 Destinations
               </Link>
               <hr className="border-border my-2" />
-              <Link
-                href="/host"
-                className="text-muted-foreground py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Become a Host
-              </Link>
+              <Button asChild variant={"outline"}>
+                <Link
+                  href="/host"
+                  className="text-muted-foreground py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Store className="h-4 w-4" />
+                  Become a Host
+                </Link>
+              </Button>
               {user ? (
                 <>
                   <Link

@@ -141,7 +141,7 @@ const Experiences = () => {
                 key={exp.title}
                 className="group bg-card rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-4/3 overflow-hidden">
                   <img
                     src={exp.image}
                     alt={exp.title}

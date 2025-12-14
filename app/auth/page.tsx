@@ -210,7 +210,7 @@ const Auth = () => {
 
       {/* Right side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-charcoal/80" />
+        <div className="absolute inset-0 bg-linear-to-br from-gold/20 to-charcoal/80" />
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -218,7 +218,7 @@ const Auth = () => {
               "url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200')",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-charcoal/90 via-transparent to-transparent" />
         <div className="absolute bottom-12 left-12 right-12 text-white">
           <h2 className="font-serif text-4xl mb-4">Experience Luxury</h2>
           <p className="text-white/80">

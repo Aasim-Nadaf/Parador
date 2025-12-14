@@ -26,7 +26,7 @@ const destinations = [
     country: "Italy",
     properties: 189,
     image:
-      "https://images.unsplash.com/photo-1534113414509-0eec2bfb493a?w=800&q=80",
+      "https://plus.unsplash.com/premium_photo-1695735927059-084a7567d303?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
       "Dramatic coastline with colorful villages clinging to steep cliffs above the Mediterranean.",
   },
@@ -110,7 +110,7 @@ const Destinations = () => {
                 key={dest.name}
                 className="group relative rounded-3xl overflow-hidden cursor-pointer bg-card shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-4/3 overflow-hidden">
                   <img
                     src={dest.image}
                     alt={`${dest.name}, ${dest.country}`}
@@ -118,7 +118,7 @@ const Destinations = () => {
                     loading="lazy"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/30 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-charcoal/90 via-charcoal/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="flex items-center gap-2 text-cream/70 text-sm mb-2">
                     <MapPin className="h-4 w-4" />
