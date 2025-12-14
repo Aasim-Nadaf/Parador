@@ -1,18 +1,49 @@
 "use client";
 import { useState } from "react";
-import { Search, MapPin, Calendar, Users } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Search, MapPin, Calendar, Users, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Calendar as CalendarComponent } from "@/components/ui/calender";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-villa.jpg";
+import Image from "next/image";
 
 const Hero = () => {
+  const navigate = useRouter();
   const [activeTab, setActiveTab] = useState<"stays" | "experiences">("stays");
+  const [destination, setDestination] = useState("");
+  const [checkIn, setCheckIn] = useState<Date | undefined>();
+  const [checkOut, setCheckOut] = useState<Date | undefined>();
+  const [guests, setGuests] = useState(1);
+  const [guestsOpen, setGuestsOpen] = useState(false);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (destination) params.set("destination", destination);
+    if (checkIn) params.set("checkIn", format(checkIn, "yyyy-MM-dd"));
+    if (checkOut) params.set("checkOut", format(checkOut, "yyyy-MM-dd"));
+    if (guests > 1) params.set("guests", guests.toString());
+
+    if (activeTab === "stays") {
+      navigate.push(`/stays?${params.toString()}`);
+    } else {
+      navigate.push(`/experiences?${params.toString()}`);
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroImage.src}
+        <Image
+          src={heroImage}
           alt="Luxury villa with infinity pool overlooking the Mediterranean sea at sunset"
           className="w-full h-full object-cover"
         />
@@ -63,51 +94,124 @@ const Hero = () => {
 
             {/* Search Fields */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
-              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
-                <MapPin className="h-5 w-5 text-accent" />
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Where</p>
-                  <p className="text-sm font-medium text-foreground">
-                    Search destinations
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
-                <Calendar className="h-5 w-5 text-accent" />
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Check in</p>
-                  <p className="text-sm font-medium text-foreground">
-                    Add dates
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
-                <Calendar className="h-5 w-5 text-accent" />
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Check out</p>
-                  <p className="text-sm font-medium text-foreground">
-                    Add dates
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer md:pr-2">
-                <Users className="h-5 w-5 text-accent" />
+              {/* Destination */}
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+                <MapPin className="h-5 w-5 text-accent shrink-0" />
                 <div className="text-left flex-1">
-                  <p className="text-xs text-muted-foreground">Guests</p>
-                  <p className="text-sm font-medium text-foreground">
-                    Add guests
-                  </p>
+                  <p className="text-xs text-muted-foreground">Where</p>
+                  <Input
+                    value={destination}
+                    onChange={(e) => setDestination(e.target.value)}
+                    placeholder="Search destinations"
+                    className="border-0 p-0 h-auto text-sm font-medium bg-transparent focus-visible:ring-0 placeholder:text-foreground/60"
+                  />
                 </div>
-                <Button
-                  size="icon"
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground h-10 w-10 rounded-xl"
-                >
-                  <Search className="h-5 w-5" />
-                </Button>
               </div>
+
+              {/* Check In */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
+                    <Calendar className="h-5 w-5 text-accent shrink-0" />
+                    <div className="text-left">
+                      <p className="text-xs text-muted-foreground">Check in</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {checkIn ? format(checkIn, "MMM d, yyyy") : "Add dates"}
+                      </p>
+                    </div>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <CalendarComponent
+                    mode="single"
+                    selected={checkIn}
+                    onSelect={setCheckIn}
+                    disabled={(date) => date < new Date()}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+
+              {/* Check Out */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
+                    <Calendar className="h-5 w-5 text-accent shrink-0" />
+                    <div className="text-left">
+                      <p className="text-xs text-muted-foreground">Check out</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {checkOut
+                          ? format(checkOut, "MMM d, yyyy")
+                          : "Add dates"}
+                      </p>
+                    </div>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <CalendarComponent
+                    mode="single"
+                    selected={checkOut}
+                    onSelect={setCheckOut}
+                    disabled={(date) => date < (checkIn || new Date())}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+
+              {/* Guests */}
+              <Popover open={guestsOpen} onOpenChange={setGuestsOpen}>
+                <PopoverTrigger asChild>
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer md:pr-2">
+                    <Users className="h-5 w-5 text-accent shrink-0" />
+                    <div className="text-left flex-1">
+                      <p className="text-xs text-muted-foreground">Guests</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {guests} {guests === 1 ? "guest" : "guests"}
+                      </p>
+                    </div>
+                    <Button
+                      size="icon"
+                      className="bg-accent hover:bg-accent/90 text-accent-foreground h-10 w-10 rounded-xl"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSearch();
+                      }}
+                    >
+                      <Search className="h-5 w-5" />
+                    </Button>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-64" align="end">
+                  <div className="flex items-center justify-between py-2">
+                    <span className="text-sm font-medium">Guests</span>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8 rounded-full"
+                        onClick={() => setGuests(Math.max(1, guests - 1))}
+                        disabled={guests <= 1}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      <span className="w-8 text-center font-medium">
+                        {guests}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8 rounded-full"
+                        onClick={() => setGuests(Math.min(16, guests + 1))}
+                        disabled={guests >= 16}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
@@ -131,12 +235,12 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator
+      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <div className="w-6 h-10 rounded-full border-2 border-cream/50 flex items-start justify-center p-2">
           <div className="w-1 h-2 bg-cream/80 rounded-full" />
         </div>
-      </div> */}
+      </div>
     </section>
   );
 };

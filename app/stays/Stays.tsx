@@ -149,8 +149,8 @@ const Stays = () => {
                   }
                   title={property.title}
                   location={property.location}
-                  price={Number(property.price_per_night)}
-                  rating={Number(property.rating) || 0}
+                  price={Number(property.price_per_night) || 0}
+                  rating={property.rating ? Number(property.rating) : 0}
                   reviewCount={property.review_count || 0}
                 />
               ))}
