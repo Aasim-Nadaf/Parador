@@ -175,36 +175,40 @@ const Navbar = () => {
                 Destinations
               </Link>
               <hr className="border-border my-2" />
-              <Button asChild variant={"outline"}>
-                <Link
-                  href="/host"
-                  className="text-muted-foreground py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Store className="h-4 w-4" />
-                  Become a Host
-                </Link>
-              </Button>
               {user ? (
                 <>
                   <Link
                     href="/my-bookings"
-                    className="text-muted-foreground py-2"
+                    className="text-lg font-medium text-foreground py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     My Bookings
                   </Link>
+                  <Button asChild variant={"outline"}>
+                    <Link
+                      href="/host"
+                      className="text-foreground py-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Store className="h-4 w-4" />
+                      Become a Host
+                    </Link>
+                  </Button>
                   <Button
                     onClick={handleSignOut}
                     variant="outline"
                     className="mt-2 w-full"
                   >
+                    <LogOut className="h-4 w-4" />
                     Sign Out
                   </Button>
                 </>
               ) : (
                 <Link href="/auth" onClick={() => setIsOpen(false)}>
-                  <Button className="mt-2 w-full">Sign In</Button>
+                  <Button className="mt-2 w-full">
+                    <User className="h-4 w-4" />
+                    Sign In
+                  </Button>
                 </Link>
               )}
             </div>
