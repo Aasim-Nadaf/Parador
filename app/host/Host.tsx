@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -25,7 +25,9 @@ import {
   Loader2,
   Pencil,
   Trash2,
-  PlusCircle,
+  Upload,
+  X,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -50,14 +52,16 @@ interface Booking {
 
 const HostDashboard = () => {
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
+  const navigate = useRouter();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [properties, setProperties] = useState<Property[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -67,12 +71,13 @@ const HostDashboard = () => {
   const [maxGuests, setMaxGuests] = useState("2");
   const [bedrooms, setBedrooms] = useState("1");
   const [bathrooms, setBathrooms] = useState("1");
+  const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/auth");
+      navigate.push("/auth");
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -122,6 +127,57 @@ const HostDashboard = () => {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || !user) return;
+
+    setUploading(true);
+    const uploadedUrls: string[] = [];
+
+    try {
+      for (const file of Array.from(files)) {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${user.id}/${Date.now()}-${Math.random()
+          .toString(36)
+          .substring(7)}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("property-images")
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("property-images").getPublicUrl(fileName);
+
+        uploadedUrls.push(publicUrl);
+      }
+
+      setImages((prev) => [...prev, ...uploadedUrls]);
+      toast({
+        title: "Images uploaded",
+        description: `${uploadedUrls.length} image(s) uploaded successfully.`,
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload images. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleCreateProperty = async () => {
     if (!user) return;
 
@@ -145,6 +201,7 @@ const HostDashboard = () => {
         max_guests: parseInt(maxGuests),
         bedrooms: parseInt(bedrooms),
         bathrooms: parseInt(bathrooms),
+        images: images.length > 0 ? images : null,
         is_active: true,
       });
 
@@ -218,6 +275,7 @@ const HostDashboard = () => {
     setMaxGuests("2");
     setBedrooms("1");
     setBathrooms("1");
+    setImages([]);
   };
 
   const totalEarnings = bookings
@@ -243,18 +301,78 @@ const HostDashboard = () => {
           </h1>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="cursor-pointer">
-                <PlusCircle className="h-4 w-4" />
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
                 Add Property
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg">
+            <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="font-serif text-xl">
                   Create New Listing
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4 mt-4">
+                {/* Image Upload */}
+                <div className="space-y-2">
+                  <Label>Property Images</Label>
+                  <div className="border-2 border-dashed border-border rounded-xl p-4">
+                    {images.length > 0 && (
+                      <div className="grid grid-cols-3 gap-2 mb-4">
+                        {images.map((url, index) => (
+                          <div
+                            key={index}
+                            className="relative aspect-square rounded-lg overflow-hidden group"
+                          >
+                            <img
+                              src={url}
+                              alt={`Property ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploading}
+                    >
+                      {uploading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="mr-2 h-4 w-4" />
+                          Upload Images
+                        </>
+                      )}
+                    </Button>
+                    <p className="text-xs text-muted-foreground text-center mt-2">
+                      Upload up to 10 images (JPG, PNG, WebP)
+                    </p>
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="title">Title *</Label>
                   <Input
@@ -396,15 +514,18 @@ const HostDashboard = () => {
                   key={property.id}
                   className="bg-card border border-border rounded-2xl overflow-hidden"
                 >
-                  <div className="aspect-video">
-                    <img
-                      src={
-                        property.images?.[0] ||
-                        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600"
-                      }
-                      alt={property.title}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="aspect-video relative">
+                    {property.images && property.images.length > 0 ? (
+                      <img
+                        src={property.images[0]}
+                        alt={property.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-muted flex items-center justify-center">
+                        <ImageIcon className="h-12 w-12 text-muted-foreground" />
+                      </div>
+                    )}
                   </div>
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-2">
@@ -516,7 +637,7 @@ const HostDashboard = () => {
                                 size="sm"
                                 variant="outline"
                                 onClick={() =>
-                                  updateBookingStatus(booking.id, "cancelled")
+                                  updateBookingStatus(booking.id, "declined")
                                 }
                               >
                                 Decline

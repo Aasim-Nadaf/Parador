@@ -22,8 +22,16 @@ import {
   Share2,
   Loader2,
   Check,
+  CalendarIcon,
 } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calender";
+import { cn } from "@/lib/utils";
 
 interface Property {
   id: string;
@@ -358,25 +366,76 @@ const PropertyDetailClient = ({ id }: PropertyDetailClientProps) => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="checkIn">Check-in</Label>
-                      <Input
-                        id="checkIn"
-                        type="date"
-                        value={checkIn}
-                        onChange={(e) => setCheckIn(e.target.value)}
-                        min={format(new Date(), "yyyy-MM-dd")}
-                      />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            id="checkIn"
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !checkIn && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {checkIn
+                              ? format(new Date(checkIn), "PPP")
+                              : "Pick a date"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={checkIn ? new Date(checkIn) : undefined}
+                            onSelect={(date) =>
+                              setCheckIn(date ? format(date, "yyyy-MM-dd") : "")
+                            }
+                            disabled={(date) => date < new Date()}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </div>
+
                     <div className="space-y-2">
                       <Label htmlFor="checkOut">Check-out</Label>
-                      <Input
-                        id="checkOut"
-                        type="date"
-                        value={checkOut}
-                        onChange={(e) => setCheckOut(e.target.value)}
-                        min={checkIn || format(new Date(), "yyyy-MM-dd")}
-                      />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            id="checkOut"
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !checkOut && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {checkOut
+                              ? format(new Date(checkOut), "PPP")
+                              : "Pick a date"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={checkOut ? new Date(checkOut) : undefined}
+                            onSelect={(date) =>
+                              setCheckOut(
+                                date ? format(date, "yyyy-MM-dd") : ""
+                              )
+                            }
+                            disabled={(date) => {
+                              const minDate = checkIn
+                                ? new Date(checkIn)
+                                : new Date();
+                              return date < minDate;
+                            }}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </div>
                   </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="guests">Guests</Label>
                     <Input
@@ -389,7 +448,6 @@ const PropertyDetailClient = ({ id }: PropertyDetailClientProps) => {
                     />
                   </div>
                 </div>
-
                 <Button
                   className="w-full mb-4"
                   onClick={handleBooking}
@@ -398,7 +456,6 @@ const PropertyDetailClient = ({ id }: PropertyDetailClientProps) => {
                   {booking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {user ? "Reserve" : "Sign in to book"}
                 </Button>
-
                 {nights > 0 && (
                   <div className="space-y-3 pt-4 border-t border-border">
                     <div className="flex justify-between text-sm">
